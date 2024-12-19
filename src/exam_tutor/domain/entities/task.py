@@ -3,11 +3,11 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from exam_tutor.domain.entities.task_photo import TaskPhotoId
 from exam_tutor.domain.entities.answer_video import AnswerVideoId
-from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 from exam_tutor.domain.entities.task_file import TaskFileId
+from exam_tutor.domain.entities.task_photo import TaskPhotoId
 from exam_tutor.domain.entities.task_sound import TaskSoundId
+from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 
 TaskId = NewType("TaskId", UUID)
 FloatAnswer = NewType("FloatAnswer", float)
