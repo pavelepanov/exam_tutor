@@ -1,10 +1,9 @@
 from dataclasses import dataclass
-from uuid import UUID
 from typing import NewType
+from uuid import UUID
 
-
-AnswerVideoId = NewType('VideoId', UUID)
-AnswerVideoLink = NewType('VideoLink', str)
+AnswerVideoId = NewType("VideoId", UUID)
+AnswerVideoLink = NewType("VideoLink", str)
 
 
 @dataclass(slots=True)

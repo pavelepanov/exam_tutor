@@ -1,16 +1,16 @@
 from dataclasses import dataclass
-from uuid import UUID
-from exam_tutor.domain.enums import ExamEnum, SubjectEnum, ExamTaskNumber, DifficultEnum
 from datetime import datetime
 from typing import NewType
+from uuid import UUID
 
 from exam_tutor.domain.entities.answer_photo import AnswerPhotoId
 from exam_tutor.domain.entities.answer_video import AnswerVideoId
+from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 
-TaskId = NewType('TaskId', UUID)
-FloatAnswer = NewType('FloatAnswer', float)
-StrAnswer = NewType('StrAnswer', str)
-Condition = NewType('Condition', str)
+TaskId = NewType("TaskId", UUID)
+FloatAnswer = NewType("FloatAnswer", float)
+StrAnswer = NewType("StrAnswer", str)
+Condition = NewType("Condition", str)
 
 
 @dataclass(slots=True)

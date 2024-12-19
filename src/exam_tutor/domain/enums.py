@@ -1,32 +1,32 @@
-from enum import (StrEnum, IntEnum)
+from enum import IntEnum, StrEnum
 
 
 class DifficultEnum(StrEnum):
-    EASY = 'easy'
-    MIDDLE = 'medium'
-    HARD = 'hard'
+    EASY = "easy"
+    MIDDLE = "medium"
+    HARD = "hard"
 
 
 class ExamEnum(StrEnum):
-    EGE = 'ege'
-    OGE = 'oge'
+    EGE = "ege"
+    OGE = "oge"
 
 
 class SubjectEnum(StrEnum):
-    MATH = 'math'
-    INFORMATICS = 'informatics'
-    RUSSIAN = 'russian'
-    ENGLISH = 'english'
-    GERMAN = 'german'
-    FRENCH = 'french'
-    SPANISH = 'spanish'
-    PHYSICS = 'physics'
-    CHEMISTRY = 'chemistry'
-    BIOLOGY = 'biology'
-    GEOGRAPHY = 'geography'
-    SOCIAL = 'social'
-    LITERATURE = 'literature'
-    HISTORY = 'history'
+    MATH = "math"
+    INFORMATICS = "informatics"
+    RUSSIAN = "russian"
+    ENGLISH = "english"
+    GERMAN = "german"
+    FRENCH = "french"
+    SPANISH = "spanish"
+    PHYSICS = "physics"
+    CHEMISTRY = "chemistry"
+    BIOLOGY = "biology"
+    GEOGRAPHY = "geography"
+    SOCIAL = "social"
+    LITERATURE = "literature"
+    HISTORY = "history"
 
 
 class ExamTaskNumber(IntEnum):
