@@ -9,3 +9,6 @@ class Committer(Committer):
 
     async def commit(self) -> None:
         await self._session.commit()
+
+    async def flush(self):
+        await self._session.flush()
