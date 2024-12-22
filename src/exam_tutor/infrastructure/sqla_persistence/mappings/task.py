@@ -1,11 +1,11 @@
 from sqlalchemy import DATETIME, UUID, Column, Enum, ForeignKey, String, Table, func
 
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
-from exam_tutor.infrastructure.sqla_persistence.orm_registry import metadata_obj
+from exam_tutor.infrastructure.sqla_persistence.orm_registry import mapping_registry
 
 tasks_table = Table(
     "tasks",
-    metadata_obj,
+    mapping_registry.metadata,
     Column("id", UUID(as_uuid=True), primary_key=True),
     Column("exam", Enum(ExamEnum)),
     Column("subject", Enum(SubjectEnum)),
