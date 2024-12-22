@@ -1,4 +1,4 @@
-from sqlalchemy import DATETIME, UUID, Column, Enum, ForeignKey, String, Table, func
+from sqlalchemy import TIMESTAMP, UUID, Column, Enum, ForeignKey, String, Table, func
 
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 from exam_tutor.infrastructure.sqla_persistence.orm_registry import mapping_registry
@@ -13,8 +13,8 @@ tasks_table = Table(
     Column("condition", String),
     Column("answer", String),
     Column("difficult", Enum(DifficultEnum)),
-    Column("created_at", DATETIME, default=func.now()),
-    Column("task_sound_id", ForeignKey("task_sound.id"), nullable=False),
+    Column("created_at", TIMESTAMP, default=func.now()),
+    Column("task_sound_id", ForeignKey("task_sounds.id"), nullable=False),
     Column("task_file_id", ForeignKey("task_files.id"), nullable=False),
     Column("task_photo_id", ForeignKey("task_photos.id"), nullable=False),
     Column("answer_video_id", ForeignKey("answer_videos.id"), nullable=False),

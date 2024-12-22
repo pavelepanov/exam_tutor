@@ -1,6 +1,10 @@
 from dataclasses import dataclass
 from os import getenv
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 @dataclass(frozen=True)
 class PostgresDsn:
@@ -10,4 +14,4 @@ class PostgresDsn:
     def from_env() -> "PostgresDsn":
         uri = getenv("POSTGRES_URI")
 
-        return PostgresDsn(uri)
+        return PostgresDsn(str(uri))

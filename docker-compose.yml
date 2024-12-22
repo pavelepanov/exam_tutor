@@ -1,0 +1,36 @@
+services:
+  backend:
+    container_name: fastapi
+    env_file:
+      - ./.env
+    build:
+        context: .
+        dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    networks:
+      - custom
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_URI: $POSTGRES_URI
+    command: "gunicorn -c conf/gunicorn.conf.py 'exam_tutor.entrypoint.setup:create_app()'"
+
+  postgres:
+    container_name: postgres
+    image: postgres:13.0-alpine
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_NAME}
+    networks:
+      - custom
+    ports:
+      - "2344:${POSTGRES_PORT}"
+
+
+networks:
+  custom:
+    driver: bridge
