@@ -10,7 +10,6 @@ from exam_tutor.domain.entities.task_sound import TaskSoundId
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 
 TaskId = NewType("TaskId", UUID)
-FloatAnswer = NewType("FloatAnswer", float)
 StrAnswer = NewType("StrAnswer", str)
 Condition = NewType("Condition", str)
 
@@ -22,7 +21,7 @@ class Task:
     subject: SubjectEnum
     exam_task_number: ExamTaskNumber
     condition: Condition
-    answer: FloatAnswer | StrAnswer
+    answer: StrAnswer
     difficult: DifficultEnum
     created_at: datetime
     task_sound_id: TaskSoundId | None = None
