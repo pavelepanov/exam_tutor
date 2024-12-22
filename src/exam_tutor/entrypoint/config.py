@@ -3,11 +3,11 @@ from os import getenv
 
 
 @dataclass(frozen=True)
-class PostgresConfig:
+class PostgresDsn:
     db_uri: str
 
     @staticmethod
-    def from_env() -> "PostgresConfig":
+    def from_env() -> "PostgresDsn":
         uri = getenv("POSTGRES_URI")
 
-        return PostgresConfig(uri)
+        return PostgresDsn(uri)
