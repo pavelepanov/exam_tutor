@@ -24,8 +24,8 @@ class Task:
     condition: Condition
     answer: FloatAnswer | StrAnswer
     difficult: DifficultEnum
-    task_sound_id: TaskSoundId | None
-    task_file_id: TaskFileId | None
-    task_photo_id: TaskPhotoId | None
-    answer_video_id: AnswerVideoId | None
     created_at: datetime
+    task_sound_id: TaskSoundId | None = None
+    task_file_id: TaskFileId | None = None
+    task_photo_id: TaskPhotoId | None = None
+    answer_video_id: AnswerVideoId | None = None
