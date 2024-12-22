@@ -1,18 +1,25 @@
 import asyncio
 from logging.config import fileConfig
 
-from exam_tutor.infrastructure.sqla_persistence.mappings.task import tasks_table
-from exam_tutor.infrastructure.sqla_persistence.mappings.task_file import task_files_table
-from exam_tutor.infrastructure.sqla_persistence.mappings.task_sound import task_sounds_table
-from exam_tutor.infrastructure.sqla_persistence.mappings.answer_video import answer_videos_table
-from exam_tutor.infrastructure.sqla_persistence.mappings.task_photo import task_photos_table
-
 from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from exam_tutor.entrypoint.config import PostgresDsn
+from exam_tutor.infrastructure.sqla_persistence.mappings.answer_video import (
+    answer_videos_table,
+)
+from exam_tutor.infrastructure.sqla_persistence.mappings.task import tasks_table
+from exam_tutor.infrastructure.sqla_persistence.mappings.task_file import (
+    task_files_table,
+)
+from exam_tutor.infrastructure.sqla_persistence.mappings.task_photo import (
+    task_photos_table,
+)
+from exam_tutor.infrastructure.sqla_persistence.mappings.task_sound import (
+    task_sounds_table,
+)
 from exam_tutor.infrastructure.sqla_persistence.orm_registry import mapping_registry
 
 # this is the Alembic Config object, which provides

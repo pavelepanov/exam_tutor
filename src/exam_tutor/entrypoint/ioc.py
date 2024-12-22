@@ -1,8 +1,14 @@
 from typing import AsyncIterable
 
-from dishka import Provider, Scope, provide, AsyncContainer, make_async_container
+from dishka import AsyncContainer, Provider, Scope, make_async_container, provide
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
+
 from exam_tutor.entrypoint.config import PostgresDsn
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine, async_sessionmaker
 
 
 class SqlaProvider(Provider):
@@ -15,11 +21,15 @@ class SqlaProvider(Provider):
         return create_async_engine(postgres_dsn.db_uri)
 
     @provide(scope=Scope.APP)
-    def provide_sessionmaker(self, engine: AsyncEngine) -> async_sessionmaker[AsyncSession]:
+    def provide_sessionmaker(
+        self, engine: AsyncEngine
+    ) -> async_sessionmaker[AsyncSession]:
         return async_sessionmaker(bind=engine, expire_on_commit=False)
 
     @provide(scope=Scope.REQUEST, provides=AsyncSession)
-    async def provide_session(self, sessionmaker: async_sessionmaker[AsyncSession]) -> AsyncIterable[AsyncSession]:
+    async def provide_session(
+        self, sessionmaker: async_sessionmaker[AsyncSession]
+    ) -> AsyncIterable[AsyncSession]:
         async with sessionmaker() as session:
             yield session
 

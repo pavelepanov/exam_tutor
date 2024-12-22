@@ -1,5 +1,6 @@
-from fastapi import FastAPI
 from dishka.integrations.fastapi import setup_dishka
+from fastapi import FastAPI
+
 from exam_tutor.entrypoint.ioc import create_container
 
 
