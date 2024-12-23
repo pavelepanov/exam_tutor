@@ -46,7 +46,7 @@ def upgrade() -> None:
     )
     op.create_table(
         "tasks",
-        sa.Column("id", sa.UUID(), nullable=False),
+        sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("exam", sa.Enum("EGE", "OGE", name="examenum"), nullable=True),
         sa.Column(
             "subject",

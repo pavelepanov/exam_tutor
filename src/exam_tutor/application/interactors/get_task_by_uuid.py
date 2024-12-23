@@ -10,12 +10,12 @@ from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, Sub
 
 @dataclass(frozen=True, slots=True)
 class GetTaskByUUIDRequest:
-    id: UUID
+    id: int
 
 
 @dataclass(frozen=True, slots=True)
 class GetTaskByUUIDResponse:
-    id: UUID
+    id: int
     exam: ExamEnum
     subject: SubjectEnum
     exam_task_number: ExamTaskNumber

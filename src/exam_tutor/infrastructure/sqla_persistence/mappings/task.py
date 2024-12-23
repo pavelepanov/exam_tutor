@@ -1,4 +1,4 @@
-from sqlalchemy import TIMESTAMP, UUID, Column, Enum, ForeignKey, String, Table, func
+from sqlalchemy import TIMESTAMP, UUID, Column, Enum, ForeignKey, String, Table, func, Integer
 
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 from exam_tutor.infrastructure.sqla_persistence.orm_registry import mapping_registry
@@ -6,7 +6,7 @@ from exam_tutor.infrastructure.sqla_persistence.orm_registry import mapping_regi
 tasks_table = Table(
     "tasks",
     mapping_registry.metadata,
-    Column("id", UUID(as_uuid=True), primary_key=True),
+    Column("id", Integer, primary_key=True),
     Column("exam", Enum(ExamEnum)),
     Column("subject", Enum(SubjectEnum)),
     Column("exam_task_number", Enum(ExamTaskNumber)),
