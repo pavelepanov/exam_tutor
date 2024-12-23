@@ -1,16 +1,20 @@
-from dishka.integrations.fastapi import setup_dishka
-from fastapi import FastAPI
+from typing import Iterable
 
-from exam_tutor.entrypoint.ioc import create_container
-
-
-def init_di(app: FastAPI) -> None:
-    setup_dishka(create_container(), app)
+from dishka import AsyncContainer, Provider, make_async_container
+from fastapi import APIRouter, FastAPI
 
 
 def create_app() -> FastAPI:
     app = FastAPI()
 
-    init_di(app)
-
     return app
+
+
+def create_async_ioc_container(providers: Iterable[Provider]) -> AsyncContainer:
+    return make_async_container(
+        *providers,
+    )
+
+
+def configure_app(app: FastAPI, root_router: APIRouter) -> None:
+    app.include_router(root_router)

@@ -14,7 +14,7 @@ services:
       - postgres
     environment:
       POSTGRES_URI: $POSTGRES_URI
-    command: "gunicorn -c conf/gunicorn.conf.py 'exam_tutor.entrypoint.setup:create_app()'"
+    command: "gunicorn -c conf/gunicorn.conf.py 'exam_tutor.run:make_app()'"
 
   postgres:
     container_name: postgres

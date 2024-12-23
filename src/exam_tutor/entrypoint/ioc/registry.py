@@ -6,13 +6,8 @@ from exam_tutor.entrypoint.ioc.adapters import SqlaProvider
 from exam_tutor.entrypoint.ioc.interactors import InteractorProvider
 
 
-def create_async_container() -> AsyncContainer:
-    return make_async_container(SqlaProvider(), InteractorProvider())
-
-
 def get_providers() -> Iterable[Provider]:
     return (
         SqlaProvider(),
         InteractorProvider(),
-
     )
