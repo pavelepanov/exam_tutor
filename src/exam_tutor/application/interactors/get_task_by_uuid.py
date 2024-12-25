@@ -22,10 +22,10 @@ class GetTaskByUUIDResponse:
     condition: str
     answer: float | str
     difficult: DifficultEnum
-    task_sound_id: UUID | None
-    task_file_id: UUID | None
-    task_photo_id: UUID | None
-    answer_video_id: UUID | None
+    task_sound_link: str | None
+    task_file_link: str | None
+    task_photo_link: str | None
+    answer_video_link: str | None
     created_at: datetime
 
 
@@ -53,9 +53,9 @@ class GetTaskByUUIDInteractor:
             condition=task.condition,
             answer=task.answer,
             difficult=task.difficult,
-            task_sound_id=task.task_sound_id,
-            task_file_id=task.task_file_id,
-            task_photo_id=task.task_photo_id,
-            answer_video_id=task.answer_video_id,
+            task_sound_link=task.task_sound_link,
+            task_file_link=task.task_file_link,
+            task_photo_link=task.task_photo_link,
+            answer_video_link=task.answer_video_link,
             created_at=task.created_at,
         )
