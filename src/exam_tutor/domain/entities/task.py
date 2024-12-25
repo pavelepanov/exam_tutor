@@ -2,15 +2,16 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType
 
-from exam_tutor.domain.entities.answer_video import AnswerVideoId
-from exam_tutor.domain.entities.task_file import TaskFileId
-from exam_tutor.domain.entities.task_photo import TaskPhotoId
-from exam_tutor.domain.entities.task_sound import TaskSoundId
+
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 
 TaskId = NewType("TaskId", int)
 StrAnswer = NewType("StrAnswer", str)
 Condition = NewType("Condition", str)
+TaskSoundLink = NewType("TaskSoundFile", str)
+TaskFileLink = NewType("TaskFileLink", str)
+TaskPhotoLink = NewType("TaskPhotoLink", str)
+AnswerVideoLink = NewType("AnswerVideoLink", str)
 
 
 @dataclass(slots=True)
@@ -23,7 +24,7 @@ class Task:
     answer: StrAnswer
     difficult: DifficultEnum
     created_at: datetime
-    task_sound_id: TaskSoundId | None = None
-    task_file_id: TaskFileId | None = None
-    task_photo_id: TaskPhotoId | None = None
-    answer_video_id: AnswerVideoId | None = None
+    task_sound_link: TaskSoundLink | None = None
+    task_file_link: TaskFileLink | None = None
+    task_photo_link: TaskPhotoLink | None = None
+    answer_video_link: AnswerVideoLink | None = None
