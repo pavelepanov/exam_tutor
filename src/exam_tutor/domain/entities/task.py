@@ -12,6 +12,7 @@ TaskSoundLink = NewType("TaskSoundFile", str)
 TaskFileLink = NewType("TaskFileLink", str)
 TaskPhotoLink = NewType("TaskPhotoLink", str)
 AnswerVideoLink = NewType("AnswerVideoLink", str)
+FindCode = NewType("FindCode", str)
 
 
 @dataclass(slots=True)
@@ -24,6 +25,7 @@ class Task:
     answer: StrAnswer
     difficult: DifficultEnum
     created_at: datetime
+    find_code: FindCode
     task_sound_link: TaskSoundLink | None = None
     task_file_link: TaskFileLink | None = None
     task_photo_link: TaskPhotoLink | None = None
