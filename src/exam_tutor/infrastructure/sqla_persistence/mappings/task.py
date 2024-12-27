@@ -41,19 +41,4 @@ def map_tasks_table() -> None:
     mapping_registry.map_imperatively(
         Task,
         tasks_table,
-        properties={
-            "id": tasks_table.c.id,
-            "exam": tasks_table.c.exam,
-            "subject": tasks_table.c.subject,
-            "exam_task_number": tasks_table.c.exam_task_number,
-            "condition": tasks_table.c.condition,
-            "answer": tasks_table.c.answer,
-            "difficult": tasks_table.c.difficult,
-            "created_at": tasks_table.c.created_at,
-            "find_code": tasks_table.c.find_code,
-            "task_sound_link": tasks_table.c.task_sound_link,
-            "task_file_link": tasks_table.c.task_file_link,
-            "task_photo_link": tasks_table.c.task_photo_link,
-            "answer_video_link": tasks_table.c.answer_video_link,
-        },
     )
