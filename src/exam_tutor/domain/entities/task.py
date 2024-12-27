@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType
-
+from uuid import UUID
 
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 
-TaskId = NewType("TaskId", int)
+TaskId = NewType("TaskId", UUID)
 StrAnswer = NewType("StrAnswer", str)
 Condition = NewType("Condition", str)
 TaskSoundLink = NewType("TaskSoundFile", str)
@@ -15,7 +15,7 @@ AnswerVideoLink = NewType("AnswerVideoLink", str)
 FindCode = NewType("FindCode", str)
 
 
-@dataclass(slots=True)
+@dataclass()
 class Task:
     id: TaskId
     exam: ExamEnum

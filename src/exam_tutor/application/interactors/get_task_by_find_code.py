@@ -10,18 +10,19 @@ from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, Sub
 
 @dataclass(frozen=True, slots=True)
 class GetTaskByUUIDRequest:
-    id: int
+    id: UUID
 
 
 @dataclass(frozen=True, slots=True)
 class GetTaskByUUIDResponse:
-    id: int
+    id: UUID
     exam: ExamEnum
     subject: SubjectEnum
     exam_task_number: ExamTaskNumber
     condition: str
     answer: float | str
     difficult: DifficultEnum
+    find_code: str
     task_sound_link: str | None
     task_file_link: str | None
     task_photo_link: str | None
@@ -58,4 +59,5 @@ class GetTaskByUUIDInteractor:
             task_photo_link=task.task_photo_link,
             answer_video_link=task.answer_video_link,
             created_at=task.created_at,
+            find_code=task.find_code,
         )
