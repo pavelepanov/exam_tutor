@@ -1,16 +1,12 @@
-
-
 from dishka import FromDishka
 from dishka.integrations.fastapi import inject
-from fastapi import APIRouter, status, Query, Depends
+from fastapi import APIRouter, Depends, status
 
 from exam_tutor.application.interactors.get_task_by_find_code import (
-    GetTaskByFindCodeResponse,
     GetTaskByFindCodeRequest,
+    GetTaskByFindCodeResponse,
 )
-
-from exam_tutor.entrypoint.ioc.interactors import GetTaskByUUIDInteractor
-
+from exam_tutor.entrypoint.ioc.interactors import GetTaskByFindCodeInteractor
 
 get_task_by_uuid_router = APIRouter()
 
@@ -18,6 +14,7 @@ get_task_by_uuid_router = APIRouter()
 @get_task_by_uuid_router.get("/", status_code=status.HTTP_200_OK)
 @inject
 async def get_task_by_uuid(
-    interactor: FromDishka[GetTaskByUUIDInteractor], request_data: GetTaskByFindCodeRequest = Depends(),
+    interactor: FromDishka[GetTaskByFindCodeInteractor],
+    request_data: GetTaskByFindCodeRequest = Depends(),
 ) -> GetTaskByFindCodeResponse:
     return await interactor(request_data)

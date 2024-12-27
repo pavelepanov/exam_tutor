@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Protocol
 
-from exam_tutor.domain.entities.task import Task, TaskId, FindCode
+from exam_tutor.domain.entities.task import FindCode, Task
 
 
 class TaskDataGateway(Protocol):

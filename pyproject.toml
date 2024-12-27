@@ -15,5 +15,6 @@ dependencies = [
     "gunicorn>=23.0.0",
     "isort>=5.13.2",
     "python-dotenv>=1.0.1",
+    "ruff>=0.8.4",
     "uvicorn>=0.34.0",
 ]

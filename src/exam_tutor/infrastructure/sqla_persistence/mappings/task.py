@@ -1,4 +1,12 @@
-from sqlalchemy import DateTime, UUID, Column, Enum, ForeignKey, String, Table, func, Integer
+from sqlalchemy import (
+    UUID,
+    Column,
+    DateTime,
+    Enum,
+    String,
+    Table,
+    func,
+)
 
 from exam_tutor.domain.entities.task import Task
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
@@ -14,12 +22,18 @@ tasks_table = Table(
     Column("condition", String, nullable=False),
     Column("answer", String, nullable=False),
     Column("difficult", Enum(DifficultEnum), nullable=False),
-    Column("created_at", DateTime, default=func.now(), server_default=func.now(), nullable=False),
+    Column(
+        "created_at",
+        DateTime,
+        default=func.now(),
+        server_default=func.now(),
+        nullable=False,
+    ),
     Column("find_code", String, nullable=False),
     Column("task_sound_link", String, nullable=True),
     Column("task_file_link", String, nullable=True),
     Column("task_photo_link", String, nullable=True),
-    Column("answer_video_link", String, nullable=True)
+    Column("answer_video_link", String, nullable=True),
 )
 
 
@@ -41,5 +55,5 @@ def map_tasks_table() -> None:
             "task_file_link": tasks_table.c.task_file_link,
             "task_photo_link": tasks_table.c.task_photo_link,
             "answer_video_link": tasks_table.c.answer_video_link,
-        }
+        },
     )

@@ -2,7 +2,7 @@ from typing import Iterable
 
 from dishka import AsyncContainer, Provider, make_async_container
 from fastapi import APIRouter, FastAPI
-from exam_tutor.infrastructure.sqla_persistence.mappings.map import map_tables
+
 
 
 def create_app() -> FastAPI:

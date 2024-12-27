@@ -4,7 +4,7 @@ from uuid import UUID
 
 from exam_tutor.application.interfaces.committer import Committer
 from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
-from exam_tutor.domain.entities.task import Task, TaskId, FindCode
+from exam_tutor.domain.entities.task import FindCode, Task
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 
 
@@ -30,7 +30,7 @@ class GetTaskByFindCodeResponse:
     created_at: datetime
 
 
-class GetTaskByUUIDInteractor:
+class GetTaskByFindCodeInteractor:
     def __init__(
         self,
         task_data_gateway: TaskDataGateway,
@@ -44,7 +44,9 @@ class GetTaskByUUIDInteractor:
     ) -> GetTaskByFindCodeResponse:
         find_code: FindCode = FindCode(request_data.find_code)
 
-        task: Task = await self._task_data_gateway.read_by_find_code(find_code=find_code)
+        task: Task = await self._task_data_gateway.read_by_find_code(
+            find_code=find_code
+        )
 
         return GetTaskByFindCodeResponse(
             id=task.id,

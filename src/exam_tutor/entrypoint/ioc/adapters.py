@@ -1,6 +1,6 @@
 from typing import AsyncIterable
 
-from dishka import AsyncContainer, Provider, Scope, make_async_container, provide
+from dishka import Provider, Scope, provide
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
