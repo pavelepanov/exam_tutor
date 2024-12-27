@@ -9,10 +9,12 @@ from exam_tutor.entrypoint.setup import (
     create_app,
     create_async_ioc_container,
 )
+from exam_tutor.infrastructure.sqla_persistence.mappings.map import map_tables
 
 
 def make_app(*di_providers: Provider) -> FastAPI:
     app = create_app()
+    map_tables()
     configure_app(app=app, root_router=root_router)
 
     async_ioc_container: AsyncContainer = create_async_ioc_container(
