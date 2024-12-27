@@ -1,6 +1,6 @@
 from dishka import Provider, Scope, provide
 
-from exam_tutor.application.interactors.get_task_by_uuid import GetTaskByUUIDInteractor
+from exam_tutor.application.interactors.get_task_by_find_code import GetTaskByUUIDInteractor
 
 
 class InteractorProvider(Provider):
