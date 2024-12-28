@@ -26,10 +26,10 @@ dev = [
 
 [tool.ruff]
 line-length = 88
-ignore = ["B008"]
-select = ["E", "F", "I", "B"]
+lint.ignore = ["B008"]
+lint.select = ["E", "F", "I", "B"]
 target-version = "py312"
-fixable = ["ALL"]
+lint.fixable = ["ALL"]
 exclude = ["alembic"]
 
 

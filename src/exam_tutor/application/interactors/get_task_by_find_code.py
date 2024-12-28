@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
@@ -7,6 +8,8 @@ from exam_tutor.application.interfaces.committer import Committer
 from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
 from exam_tutor.domain.entities.task import FindCode, Task
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True, slots=True)
@@ -43,6 +46,9 @@ class GetTaskByFindCodeInteractor:
     async def __call__(
         self, request_data: GetTaskByFindCodeRequest
     ) -> GetTaskByFindCodeResponse:
+        logger.info(
+            "Get task by find code: started. Find code: %s", request_data.find_code
+        )
         find_code: FindCode = FindCode(request_data.find_code)
 
         task: Task = await self._task_data_gateway.read_by_find_code(
@@ -50,6 +56,7 @@ class GetTaskByFindCodeInteractor:
         )
 
         if task is not None:
+            logger.info("Get task by find code: finished. Find code: %s", find_code)
             return GetTaskByFindCodeResponse(
                 id=task.id,
                 exam=task.exam,
@@ -66,4 +73,7 @@ class GetTaskByFindCodeInteractor:
                 find_code=task.find_code,
             )
         else:
+            logger.info(
+                "Get task by find code: raised does not exist. Find code: %s", find_code
+            )
             raise DoesNotExistError("Does not exist.")
