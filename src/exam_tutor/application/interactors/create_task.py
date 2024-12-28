@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
@@ -15,6 +16,8 @@ from exam_tutor.domain.entities.task import (
 )
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
 from exam_tutor.domain.services.task import TaskService
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True, slots=True)
@@ -56,6 +59,7 @@ class CreateTaskInteractor:
         self._task_service = task_service
 
     async def __call__(self, request_data: CreateTaskRequest) -> CreateTaskResponse:
+        logger.info("Create task: started. Condition: %s", request_data.condition)
         exam: ExamEnum = ExamEnum(request_data.exam)
         subject: SubjectEnum = SubjectEnum(request_data.subject)
         exam_task_number: ExamTaskNumber = ExamTaskNumber(request_data.exam_task_number)
@@ -67,7 +71,6 @@ class CreateTaskInteractor:
         task_file_link: TaskFileLink | None = None
         task_photo_link: TaskPhotoLink | None = None
         answer_video_link: AnswerVideoLink | None = None
-
         task: Task = await self._task_service.create_task(
             exam=exam,
             subject=subject,
@@ -86,6 +89,7 @@ class CreateTaskInteractor:
 
         await self._committer.commit()
 
+        logger.info("Create task: finished. Condition: %s", task.condition)
         return CreateTaskResponse(
             id=task.id,
             exam=task.exam,
