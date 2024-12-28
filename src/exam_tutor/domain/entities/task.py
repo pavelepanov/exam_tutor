@@ -24,7 +24,7 @@ class Task:
     condition: Condition
     answer: StrAnswer
     difficult: DifficultEnum
-    created_at: datetime
+    created_at: datetime | None
     find_code: FindCode
     task_sound_link: TaskSoundLink | None = None
     task_file_link: TaskFileLink | None = None
