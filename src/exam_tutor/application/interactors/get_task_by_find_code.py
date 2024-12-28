@@ -23,7 +23,7 @@ class GetTaskByFindCodeResponse:
     subject: SubjectEnum
     exam_task_number: ExamTaskNumber
     condition: str
-    answer: float | str
+    answer: str
     difficult: DifficultEnum
     find_code: str
     task_sound_link: str | None
