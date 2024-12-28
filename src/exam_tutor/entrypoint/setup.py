@@ -2,6 +2,7 @@ from typing import Iterable
 
 from dishka import AsyncContainer, Provider, make_async_container
 from fastapi import APIRouter, FastAPI
+
 from exam_tutor.controllers.http.base.error_handler import init_error_handlers
 
 

@@ -2,11 +2,11 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
+from exam_tutor.application.errors import DoesNotExistError
 from exam_tutor.application.interfaces.committer import Committer
 from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
 from exam_tutor.domain.entities.task import FindCode, Task
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
-from exam_tutor.application.errors import DoesNotExistError
 
 
 @dataclass(frozen=True, slots=True)

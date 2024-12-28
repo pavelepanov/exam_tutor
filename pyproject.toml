@@ -17,7 +17,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "black>=24.10.0",
     "isort>=5.13.2",
     "pre-commit>=4.0.1",
     "python-dotenv>=1.0.1",
@@ -25,23 +24,17 @@ dev = [
 ]
 
 
-[tool.black]
-line-length = 88
-target-version = ["py312"]
-exclude = '''
-    .venv/
-    conf/
-    scripts/
-'''
-
 [tool.ruff]
 line-length = 88
+ignore = ["B008"]
 select = ["E", "F", "I", "B"]
 target-version = "py312"
 fixable = ["ALL"]
+exclude = ["alembic"]
+
 
 [tool.isort]
 profile = "black"
 line_length = 88
 known_first_party = ["exam_tutor"]
-skip = ["alembic"]  # Игнорировать каталоги
+skip = ["alembic"]

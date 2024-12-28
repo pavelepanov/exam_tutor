@@ -1,12 +1,4 @@
-from sqlalchemy import (
-    UUID,
-    Column,
-    DateTime,
-    Enum,
-    String,
-    Table,
-    func,
-)
+from sqlalchemy import UUID, Column, DateTime, Enum, String, Table, func
 
 from exam_tutor.domain.entities.task import Task
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
