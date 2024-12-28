@@ -8,13 +8,40 @@ dependencies = [
     "alembic>=1.14.0",
     "async-sqlalchemy>=1.0.0",
     "asyncpg>=0.30.0",
-    "black>=24.10.0",
     "dishka>=1.4.2",
     "fastapi[standard]>=0.115.6",
     "greenlet>=3.1.1",
     "gunicorn>=23.0.0",
-    "isort>=5.13.2",
-    "python-dotenv>=1.0.1",
-    "ruff>=0.8.4",
     "uvicorn>=0.34.0",
 ]
+
+[dependency-groups]
+dev = [
+    "black>=24.10.0",
+    "isort>=5.13.2",
+    "pre-commit>=4.0.1",
+    "python-dotenv>=1.0.1",
+    "ruff>=0.8.4",
+]
+
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+exclude = '''
+    .venv/
+    conf/
+    scripts/
+'''
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "I", "B"]
+target-version = "py312"
+fixable = ["ALL"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["exam_tutor"]
+skip = ["alembic"]  # Игнорировать каталоги
