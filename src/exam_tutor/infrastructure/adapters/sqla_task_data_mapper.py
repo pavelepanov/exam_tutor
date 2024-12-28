@@ -17,3 +17,6 @@ class SqlaTaskDataMapper(TaskDataGateway):
         task: Task | None = result.scalars().one_or_none()
 
         return task
+
+    async def add(self, task: Task) -> Task:
+        self._session.add(task)
