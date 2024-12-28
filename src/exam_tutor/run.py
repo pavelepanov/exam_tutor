@@ -6,6 +6,7 @@ from exam_tutor.controllers.http.base.root_router import root_router
 from exam_tutor.entrypoint.ioc.registry import get_providers
 from exam_tutor.entrypoint.setup import (
     configure_app,
+    configure_logging,
     create_app,
     create_async_ioc_container,
 )
@@ -22,5 +23,7 @@ def make_app(*di_providers: Provider) -> FastAPI:
     )
 
     setup_dishka(container=async_ioc_container, app=app)
+
+    configure_logging()
 
     return app
