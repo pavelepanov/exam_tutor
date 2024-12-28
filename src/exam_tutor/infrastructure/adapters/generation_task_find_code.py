@@ -2,10 +2,10 @@ from random import choices
 from string import ascii_letters, digits
 
 from exam_tutor.application.constants import TASK_FIND_CODE_LENGTH
-from exam_tutor.application.interfaces.generation_task_find_code import (
+from exam_tutor.domain.entities.task import FindCode
+from exam_tutor.domain.interfaces.generation_task_find_code import (
     GenerationTaskFindCode,
 )
-from exam_tutor.domain.entities.task import FindCode
 
 
 class GenerationTaskFindCodeImpl(GenerationTaskFindCode):

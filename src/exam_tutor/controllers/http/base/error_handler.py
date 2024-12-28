@@ -5,7 +5,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from starlette import status as code
 
-from exam_tutor.application.errors import DoesNotExistError
+from exam_tutor.application.errors import DoesNotExistError, NotCreated
 from exam_tutor.domain.error import Error
 
 
@@ -21,4 +21,7 @@ def init_error_handlers(app: FastAPI) -> None:
     app.add_exception_handler(
         DoesNotExistError,
         partial(validate, status=code.HTTP_409_CONFLICT),
+    )
+    app.add_exception_handler(
+        NotCreated, partial(validate, status=code.HTTP_422_UNPROCESSABLE_ENTITY)
     )

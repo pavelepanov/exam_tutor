@@ -9,11 +9,11 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from exam_tutor.application.interfaces.committer import Committer
-from exam_tutor.application.interfaces.generation_task_find_code import (
+from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
+from exam_tutor.domain.interfaces.generation_task_find_code import (
     GenerationTaskFindCode,
 )
-from exam_tutor.application.interfaces.generation_task_id import GenerationTaskId
-from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
+from exam_tutor.domain.interfaces.generation_task_id import GenerationTaskId
 from exam_tutor.domain.services.task import TaskService
 from exam_tutor.entrypoint.config import PostgresDsn
 from exam_tutor.infrastructure.adapters.generation_task_find_code import (
@@ -52,7 +52,9 @@ class SqlaProvider(Provider):
     sqla_committer = provide(CommitterImpl, scope=Scope.REQUEST, provides=Committer)
 
 
-class GenerationModelsFieldsProvider(Provider):
+class TaskDomainProvider(Provider):
+    task_service = provide(source=TaskService, scope=Scope.REQUEST)
+
     generation_task_find_code = provide(
         GenerationTaskFindCodeImpl, scope=Scope.REQUEST, provides=GenerationTaskFindCode
     )
@@ -60,7 +62,3 @@ class GenerationModelsFieldsProvider(Provider):
     generation_task_id = provide(
         GenerationTaskIdImpl, scope=Scope.REQUEST, provides=GenerationTaskId
     )
-
-
-class TaskDomainProvider(Provider):
-    task_service = provide(source=TaskService, scope=Scope.REQUEST)

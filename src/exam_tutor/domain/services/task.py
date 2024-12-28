@@ -1,9 +1,5 @@
 from datetime import datetime
 
-from exam_tutor.application.interfaces.generation_task_find_code import (
-    GenerationTaskFindCode,
-)
-from exam_tutor.application.interfaces.generation_task_id import GenerationTaskId
 from exam_tutor.domain.entities.task import (
     AnswerVideoLink,
     Condition,
@@ -16,6 +12,10 @@ from exam_tutor.domain.entities.task import (
     TaskSoundLink,
 )
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
+from exam_tutor.domain.interfaces.generation_task_find_code import (
+    GenerationTaskFindCode,
+)
+from exam_tutor.domain.interfaces.generation_task_id import GenerationTaskId
 
 
 class TaskService:

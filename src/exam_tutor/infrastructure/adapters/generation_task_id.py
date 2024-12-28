@@ -1,7 +1,7 @@
 from uuid import uuid4
 
-from exam_tutor.application.interfaces.generation_task_id import GenerationTaskId
 from exam_tutor.domain.entities.task import TaskId
+from exam_tutor.domain.interfaces.generation_task_id import GenerationTaskId
 
 
 class GenerationTaskIdImpl(GenerationTaskId):

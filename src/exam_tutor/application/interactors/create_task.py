@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
+from exam_tutor.application.errors import NotCreated
 from exam_tutor.application.interfaces.committer import Committer
 from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
 from exam_tutor.domain.entities.task import (
@@ -22,12 +23,12 @@ logger = logging.getLogger(__name__)
 
 @dataclass(frozen=True, slots=True)
 class CreateTaskRequest:
-    exam: ExamEnum
-    subject: SubjectEnum
-    exam_task_number: ExamTaskNumber
+    exam: str
+    subject: str
+    exam_task_number: int
     condition: str
     answer: str
-    difficult: DifficultEnum
+    difficult: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -60,48 +61,55 @@ class CreateTaskInteractor:
 
     async def __call__(self, request_data: CreateTaskRequest) -> CreateTaskResponse:
         logger.info("Create task: started. Condition: %s", request_data.condition)
-        exam: ExamEnum = ExamEnum(request_data.exam)
-        subject: SubjectEnum = SubjectEnum(request_data.subject)
-        exam_task_number: ExamTaskNumber = ExamTaskNumber(request_data.exam_task_number)
-        condition: Condition = Condition(request_data.condition)
-        answer: StrAnswer = StrAnswer(request_data.answer)
-        difficult: DifficultEnum = DifficultEnum(request_data.difficult)
-        created_at: datetime | None = None
-        task_sound_link: TaskSoundLink | None = None
-        task_file_link: TaskFileLink | None = None
-        task_photo_link: TaskPhotoLink | None = None
-        answer_video_link: AnswerVideoLink | None = None
-        task: Task = await self._task_service.create_task(
-            exam=exam,
-            subject=subject,
-            exam_task_number=exam_task_number,
-            condition=condition,
-            answer=answer,
-            difficult=difficult,
-            created_at=created_at,
-            task_sound_link=task_sound_link,
-            task_file_link=task_file_link,
-            task_photo_link=task_photo_link,
-            answer_video_link=answer_video_link,
-        )
+        try:
+            exam: ExamEnum = ExamEnum(request_data.exam)
+            subject: SubjectEnum = SubjectEnum(request_data.subject)
+            exam_task_number: ExamTaskNumber = ExamTaskNumber(
+                request_data.exam_task_number
+            )
+            condition: Condition = Condition(request_data.condition)
+            answer: StrAnswer = StrAnswer(request_data.answer)
+            difficult: DifficultEnum = DifficultEnum(request_data.difficult)
+            created_at: datetime | None = None
+            task_sound_link: TaskSoundLink | None = None
+            task_file_link: TaskFileLink | None = None
+            task_photo_link: TaskPhotoLink | None = None
+            answer_video_link: AnswerVideoLink | None = None
 
-        await self._task_data_gateway.add(task)
+            task: Task = await self._task_service.create_task(
+                exam=exam,
+                subject=subject,
+                exam_task_number=exam_task_number,
+                condition=condition,
+                answer=answer,
+                difficult=difficult,
+                created_at=created_at,
+                task_sound_link=task_sound_link,
+                task_file_link=task_file_link,
+                task_photo_link=task_photo_link,
+                answer_video_link=answer_video_link,
+            )
 
-        await self._committer.commit()
+            await self._task_data_gateway.add(task)
 
-        logger.info("Create task: finished. Condition: %s", task.condition)
-        return CreateTaskResponse(
-            id=task.id,
-            exam=task.exam,
-            subject=task.subject,
-            exam_task_number=task.exam_task_number,
-            condition=task.condition,
-            answer=task.answer,
-            difficult=task.difficult,
-            find_code=task.find_code,
-            task_sound_link=task.task_sound_link,
-            task_file_link=task.task_file_link,
-            task_photo_link=task.task_photo_link,
-            answer_video_link=task.answer_video_link,
-            created_at=task.created_at,
-        )
+            await self._committer.commit()
+
+            logger.info("Create task: finished. Condition: %s", task.condition)
+            return CreateTaskResponse(
+                id=task.id,
+                exam=task.exam,
+                subject=task.subject,
+                exam_task_number=task.exam_task_number,
+                condition=task.condition,
+                answer=task.answer,
+                difficult=task.difficult,
+                find_code=task.find_code,
+                task_sound_link=task.task_sound_link,
+                task_file_link=task.task_file_link,
+                task_photo_link=task.task_photo_link,
+                answer_video_link=task.answer_video_link,
+                created_at=task.created_at,
+            )
+        except Exception as error:
+            logger.exception("Create task: raised %s", error)
+            raise NotCreated(f"Not created. {error}") from None
