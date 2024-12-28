@@ -12,11 +12,13 @@ from exam_tutor.application.interfaces.committer import Committer
 from exam_tutor.application.interfaces.generation_task_find_code import (
     GenerationTaskFindCode,
 )
+from exam_tutor.application.interfaces.generation_task_id import GenerationTaskId
 from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
 from exam_tutor.entrypoint.config import PostgresDsn
 from exam_tutor.infrastructure.adapters.generation_task_find_code import (
     GenerationTaskFindCodeImpl,
 )
+from exam_tutor.infrastructure.adapters.generation_task_id import GenerationTaskIdImpl
 from exam_tutor.infrastructure.adapters.sqla_committer import CommitterImpl
 from exam_tutor.infrastructure.adapters.sqla_task_data_mapper import SqlaTaskDataMapper
 
@@ -52,4 +54,8 @@ class SqlaProvider(Provider):
 class GenerationModelsFieldsProvider(Provider):
     generation_task_find_code = provide(
         GenerationTaskFindCodeImpl, scope=Scope.REQUEST, provides=GenerationTaskFindCode
+    )
+
+    generation_task_id = provide(
+        GenerationTaskIdImpl, scope=Scope.REQUEST, provides=GenerationTaskId
     )
