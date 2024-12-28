@@ -14,6 +14,7 @@ from exam_tutor.application.interfaces.generation_task_find_code import (
 )
 from exam_tutor.application.interfaces.generation_task_id import GenerationTaskId
 from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
+from exam_tutor.domain.services.task import TaskService
 from exam_tutor.entrypoint.config import PostgresDsn
 from exam_tutor.infrastructure.adapters.generation_task_find_code import (
     GenerationTaskFindCodeImpl,
@@ -59,3 +60,7 @@ class GenerationModelsFieldsProvider(Provider):
     generation_task_id = provide(
         GenerationTaskIdImpl, scope=Scope.REQUEST, provides=GenerationTaskId
     )
+
+
+class TaskDomainProvider(Provider):
+    task_service = provide(source=TaskService, scope=Scope.REQUEST)
