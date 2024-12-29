@@ -19,8 +19,14 @@ async def create_task(
     request_data: CreateTaskRequest = Depends(),
 ) -> CreateTaskResponse:
     if request_answer_video_file is not None:
-        request_answer_video_file: bytes = await request_answer_video_file.read()
+        request_answer_video_file_bytes: bytes = await request_answer_video_file.read()
+        request_answer_video_info = {
+            "payload": request_answer_video_file_bytes,
+            "content_type": request_answer_video_file.content_type,
+        }
+    else:
+        request_answer_video_info = None
 
     return await interactor(
-        request_data=request_data, request_answer_video_file=request_answer_video_file
+        request_data=request_data, request_answer_video_info=request_answer_video_info
     )
