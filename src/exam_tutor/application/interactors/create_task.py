@@ -60,7 +60,7 @@ class CreateTaskInteractor:
         self._task_service = task_service
 
     async def __call__(
-        self, request_data: CreateTaskRequest, request_file: bytes
+        self, request_data: CreateTaskRequest, request_file: bytes | None
     ) -> CreateTaskResponse:
         logger.info("Create task: started. Condition: %s", request_data.condition)
         try:

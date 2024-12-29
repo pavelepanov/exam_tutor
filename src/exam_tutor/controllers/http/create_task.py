@@ -15,9 +15,10 @@ create_task_router = APIRouter()
 @inject
 async def create_task(
     interactor: FromDishka[CreateTaskInteractor],
-    request_file: UploadFile = File(...),
+    request_file: UploadFile | None = File(None),
     request_data: CreateTaskRequest = Depends(),
 ) -> CreateTaskResponse:
-    request_file: bytes = await request_file.read()
+    if request_file is not None:
+        request_file: bytes = await request_file.read()
 
     return await interactor(request_data=request_data, request_file=request_file)
