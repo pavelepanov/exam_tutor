@@ -12,6 +12,7 @@ dependencies = [
     "fastapi[standard]>=0.115.6",
     "greenlet>=3.1.1",
     "gunicorn>=23.0.0",
+    "minio>=7.2.13",
     "uvicorn>=0.34.0",
 ]
 
@@ -28,8 +29,8 @@ dev = [
 line-length = 88
 lint.ignore = ["B008"]
 lint.select = ["E", "F", "I", "B"]
-target-version = "py312"
 lint.fixable = ["ALL"]
+target-version = "py312"
 exclude = ["alembic"]
 
 
