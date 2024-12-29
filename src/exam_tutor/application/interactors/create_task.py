@@ -1,13 +1,14 @@
 import logging
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Dict
 from uuid import UUID
 
 from exam_tutor.application.errors import NotCreated
 from exam_tutor.application.interfaces.committer import Committer
+from exam_tutor.application.interfaces.file_manager import FileManager
 from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
 from exam_tutor.domain.entities.task import (
-    AnswerVideoLink,
     Condition,
     StrAnswer,
     Task,
@@ -54,13 +55,17 @@ class CreateTaskInteractor:
         task_data_gateway: TaskDataGateway,
         committer: Committer,
         task_service: TaskService,
+        file_manager: FileManager,
     ):
         self._task_data_gateway = task_data_gateway
         self._committer = committer
         self._task_service = task_service
+        self._file_manager = file_manager
 
     async def __call__(
-        self, request_data: CreateTaskRequest, request_answer_video_file: bytes | None
+        self,
+        request_data: CreateTaskRequest,
+        request_answer_video_info: Dict[str, bytes | str] | None,
     ) -> CreateTaskResponse:
         logger.info("Create task: started. Condition: %s", request_data.condition)
         try:
@@ -76,7 +81,6 @@ class CreateTaskInteractor:
             task_sound_link: TaskSoundLink | None = None
             task_file_link: TaskFileLink | None = None
             task_photo_link: TaskPhotoLink | None = None
-            answer_video_link: AnswerVideoLink | None = None
 
             task: Task = await self._task_service.create_task(
                 exam=exam,
@@ -89,10 +93,16 @@ class CreateTaskInteractor:
                 task_sound_link=task_sound_link,
                 task_file_link=task_file_link,
                 task_photo_link=task_photo_link,
-                answer_video_link=answer_video_link,
             )
 
             await self._task_data_gateway.add(task)
+
+            if request_answer_video_info is not None:
+                await self._file_manager.save_answer_video(
+                    payload=request_answer_video_info.get("payload"),
+                    content_type=request_answer_video_info.get("content_type"),
+                    answer_video_link=task.answer_video_link,
+                )
 
             await self._committer.commit()
 
