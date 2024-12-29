@@ -59,7 +59,9 @@ class CreateTaskInteractor:
         self._committer = committer
         self._task_service = task_service
 
-    async def __call__(self, request_data: CreateTaskRequest) -> CreateTaskResponse:
+    async def __call__(
+        self, request_data: CreateTaskRequest, request_file: bytes
+    ) -> CreateTaskResponse:
         logger.info("Create task: started. Condition: %s", request_data.condition)
         try:
             exam: ExamEnum = ExamEnum(request_data.exam)

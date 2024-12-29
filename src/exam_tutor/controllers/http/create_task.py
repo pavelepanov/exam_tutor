@@ -1,6 +1,6 @@
 from dishka import FromDishka
 from dishka.integrations.fastapi import inject
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Depends, File, UploadFile, status
 
 from exam_tutor.application.interactors.create_task import (
     CreateTaskInteractor,
@@ -15,6 +15,9 @@ create_task_router = APIRouter()
 @inject
 async def create_task(
     interactor: FromDishka[CreateTaskInteractor],
-    request_data: CreateTaskRequest,
+    request_file: UploadFile = File(...),
+    request_data: CreateTaskRequest = Depends(),
 ) -> CreateTaskResponse:
-    return await interactor(request_data)
+    request_file: bytes = await request_file.read()
+
+    return await interactor(request_data=request_data, request_file=request_file)
