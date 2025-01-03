@@ -2,6 +2,7 @@ from dishka import FromDishka
 from dishka.integrations.fastapi import inject
 from fastapi import APIRouter, Depends, File, UploadFile, status
 
+from exam_tutor.application.enums import FileType
 from exam_tutor.application.interactors.create_task import (
     CreateTaskInteractor,
     CreateTaskRequest,
@@ -18,15 +19,20 @@ async def create_task(
     request_answer_video_file: UploadFile | None = File(None),
     request_data: CreateTaskRequest = Depends(),
 ) -> CreateTaskResponse:
+    request_files = dict()
+
     if request_answer_video_file is not None:
         request_answer_video_file_bytes: bytes = await request_answer_video_file.read()
-        request_answer_video_info = {
+
+        answer_video_info = {
             "payload": request_answer_video_file_bytes,
             "content_type": request_answer_video_file.content_type,
         }
-    else:
-        request_answer_video_info = None
 
-    return await interactor(
-        request_data=request_data, request_answer_video_info=request_answer_video_info
-    )
+        request_files[FileType.ANSWER_VIDEO] = answer_video_info
+
+    else:
+        answer_video_info = None
+        request_files[FileType.ANSWER_VIDEO] = answer_video_info
+
+    return await interactor(request_data=request_data, request_files=request_files)

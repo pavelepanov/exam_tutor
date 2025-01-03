@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Dict
 from uuid import UUID
 
+from exam_tutor.application.enums import FileType
 from exam_tutor.application.errors import NotCreated
 from exam_tutor.application.interfaces.committer import Committer
 from exam_tutor.application.interfaces.file_manager import FileManager
@@ -65,7 +66,7 @@ class CreateTaskInteractor:
     async def __call__(
         self,
         request_data: CreateTaskRequest,
-        request_answer_video_info: Dict[str, bytes | str] | None,
+        request_files: Dict[str, bytes | str | None],
     ) -> CreateTaskResponse:
         logger.info("Create task: started. Condition: %s", request_data.condition)
         try:
@@ -97,10 +98,12 @@ class CreateTaskInteractor:
 
             await self._task_data_gateway.add(task)
 
-            if request_answer_video_info is not None:
+            if request_files[FileType.ANSWER_VIDEO] is not None:
                 await self._file_manager.save_answer_video(
-                    payload=request_answer_video_info.get("payload"),
-                    content_type=request_answer_video_info.get("content_type"),
+                    payload=request_files[FileType.ANSWER_VIDEO].get("payload"),
+                    content_type=request_files[FileType.ANSWER_VIDEO].get(
+                        "content_type"
+                    ),
                     answer_video_link=task.answer_video_link,
                 )
 
