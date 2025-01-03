@@ -1,12 +1,11 @@
 from logging import DEBUG, FileHandler, StreamHandler, basicConfig
-from os import getenv
 from typing import Iterable
 
 from dishka import AsyncContainer, Provider, make_async_container
 from fastapi import APIRouter, FastAPI
 
 from exam_tutor.controllers.http.base.error_handler import init_error_handlers
-from exam_tutor.entrypoint.config import Config
+from exam_tutor.entrypoint.config import Config, MinIOConfig, PostgresConfig, S3Buckets
 
 
 def create_app() -> FastAPI:
@@ -17,7 +16,9 @@ def create_app() -> FastAPI:
 
 def create_async_ioc_container(providers: Iterable[Provider]) -> AsyncContainer:
     config = Config(
-        s3_answer_video_bucket=getenv("ANSWER_VIDEO_BUCKET"),
+        minio_config=MinIOConfig.from_env(),
+        postgres_config=PostgresConfig.from_env(),
+        s3_buckets=S3Buckets.from_env(),
     )
     return make_async_container(
         *providers,

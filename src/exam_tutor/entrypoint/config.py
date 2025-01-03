@@ -7,14 +7,14 @@ load_dotenv()
 
 
 @dataclass(frozen=True)
-class PostgresDsn:
+class PostgresConfig:
     db_uri: str
 
     @staticmethod
-    def from_env() -> "PostgresDsn":
+    def from_env() -> "PostgresConfig":
         uri = getenv("POSTGRES_URI")
 
-        return PostgresDsn(str(uri))
+        return PostgresConfig(str(uri))
 
 
 @dataclass(frozen=True)
@@ -29,7 +29,10 @@ class MinIOConfig:
         uri = getenv("MINIO_URI")
         access_key = getenv("MINIO_ACCESS_KEY")
         secret_key = getenv("MINIO_SECRET_KEY")
-        secure = getenv("MINIO_SECURE")
+        if getenv("MINIO_SECURE") == "false":
+            secure = False
+        if getenv("MINIO_SECURE") == "true":
+            secure = True
 
         return MinIOConfig(
             uri=uri, access_key=access_key, secret_key=secret_key, secure=secure
@@ -37,5 +40,20 @@ class MinIOConfig:
 
 
 @dataclass(frozen=True)
+class S3Buckets:
+    answer_video_bucket: str
+
+    @staticmethod
+    def from_env() -> "S3Buckets":
+        answer_video_bucket = getenv("ANSWER_VIDEO_BUCKET")
+
+        return S3Buckets(
+            answer_video_bucket=answer_video_bucket,
+        )
+
+
+@dataclass(frozen=True)
 class Config:
-    s3_answer_video_bucket: str
+    minio_config: MinIOConfig
+    postgres_config: PostgresConfig
+    s3_buckets: S3Buckets

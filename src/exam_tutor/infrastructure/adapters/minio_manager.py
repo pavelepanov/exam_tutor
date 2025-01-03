@@ -19,7 +19,7 @@ class MinIOManager(FileManager):
         self, payload: bytes, answer_video_link: str, content_type: str
     ) -> None:
         self._minio_client.put_object(
-            self._minio_config.s3_answer_video_bucket,
+            self._minio_config.s3_buckets.answer_video_bucket,
             answer_video_link,
             BytesIO(payload),
             length=-1,
