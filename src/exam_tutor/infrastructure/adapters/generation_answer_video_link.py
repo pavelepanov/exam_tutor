@@ -12,6 +12,7 @@ class GenerationAnswerVideoLinkImpl(GenerationAnswerVideoLink):
     async def generate_answer_video_link(self) -> AnswerVideoLink:
         characters = ascii_letters + digits
         answer_video_link: AnswerVideoLink = AnswerVideoLink(
-            "".join(choices(characters, k=TASK_ANSWER_VIDEO_LINK_LENGTH))
+            "answer_video"
+            + "".join(choices(characters, k=TASK_ANSWER_VIDEO_LINK_LENGTH))
         )
         return answer_video_link
