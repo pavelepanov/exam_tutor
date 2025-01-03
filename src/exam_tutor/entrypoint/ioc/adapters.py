@@ -16,19 +16,37 @@ from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
 from exam_tutor.domain.interfaces.generation_task_answer_video_link import (
     GenerationAnswerVideoLink,
 )
+from exam_tutor.domain.interfaces.generation_task_file_link import (
+    GenerationTaskFileLink,
+)
 from exam_tutor.domain.interfaces.generation_task_find_code import (
     GenerationTaskFindCode,
 )
 from exam_tutor.domain.interfaces.generation_task_id import GenerationTaskId
+from exam_tutor.domain.interfaces.generation_task_photo_link import (
+    GenerationTaskPhotoLink,
+)
+from exam_tutor.domain.interfaces.generation_task_sound_link import (
+    GenerationTaskSoundLink,
+)
 from exam_tutor.domain.services.task import TaskService
 from exam_tutor.entrypoint.config import Config
 from exam_tutor.infrastructure.adapters.generation_answer_video_link import (
     GenerationAnswerVideoLinkImpl,
 )
+from exam_tutor.infrastructure.adapters.generation_task_file_link import (
+    GenerationTaskFileLinkImpl,
+)
 from exam_tutor.infrastructure.adapters.generation_task_find_code import (
     GenerationTaskFindCodeImpl,
 )
 from exam_tutor.infrastructure.adapters.generation_task_id import GenerationTaskIdImpl
+from exam_tutor.infrastructure.adapters.generation_task_photo_link import (
+    GenerationTaskPhotoLinkImpl,
+)
+from exam_tutor.infrastructure.adapters.generation_task_sound_link import (
+    GenerationTaskSoundLinkImpl,
+)
 from exam_tutor.infrastructure.adapters.minio_manager import MinIOManager
 from exam_tutor.infrastructure.adapters.sqla_committer import CommitterImpl
 from exam_tutor.infrastructure.adapters.sqla_task_data_mapper import SqlaTaskDataMapper
@@ -75,6 +93,24 @@ class TaskDomainProvider(Provider):
         GenerationAnswerVideoLinkImpl,
         scope=Scope.REQUEST,
         provides=GenerationAnswerVideoLink,
+    )
+
+    generation_task_sound_link = provide(
+        GenerationTaskSoundLinkImpl,
+        scope=Scope.REQUEST,
+        provides=GenerationTaskSoundLink,
+    )
+
+    generation_task_file_link = provide(
+        GenerationTaskFileLinkImpl,
+        scope=Scope.REQUEST,
+        provides=GenerationTaskFileLink,
+    )
+
+    generation_task_photo_link = provide(
+        GenerationTaskPhotoLinkImpl,
+        scope=Scope.REQUEST,
+        provides=GenerationTaskPhotoLink,
     )
 
 

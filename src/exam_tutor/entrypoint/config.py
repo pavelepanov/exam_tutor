@@ -42,13 +42,22 @@ class MinIOConfig:
 @dataclass(frozen=True)
 class S3Buckets:
     answer_video_bucket: str
+    task_sound_bucket: str
+    task_file_bucket: str
+    task_photo_bucket: str
 
     @staticmethod
     def from_env() -> "S3Buckets":
         answer_video_bucket = getenv("ANSWER_VIDEO_BUCKET")
+        task_sound_bucket = getenv("TASK_SOUND_BUCKET")
+        task_file_bucket = getenv("TASK_FILE_BUCKET")
+        task_photo_bucket = getenv("TASK_PHOTO_BUCKET")
 
         return S3Buckets(
             answer_video_bucket=answer_video_bucket,
+            task_sound_bucket=task_sound_bucket,
+            task_file_bucket=task_file_bucket,
+            task_photo_bucket=task_photo_bucket,
         )
 
 
