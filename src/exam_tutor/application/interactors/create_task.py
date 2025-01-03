@@ -43,9 +43,9 @@ class CreateTaskResponse:
     answer: str
     difficult: DifficultEnum
     find_code: str
-    task_sound_link: str | None
-    task_file_link: str | None
-    task_photo_link: str | None
+    task_sound_link: list[str] | None
+    task_file_link: list[str] | None
+    task_photo_link: list[str] | None
     answer_video_link: str | None
     created_at: datetime
 
