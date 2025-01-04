@@ -17,9 +17,9 @@ create_task_router = APIRouter()
 async def create_task(
     interactor: FromDishka[CreateTaskInteractor],
     request_answer_video_file: UploadFile | None = File(None),
-    request_sound_files: list[UploadFile] | None = list[File(None)],
-    request_file_files: list[UploadFile] | None = list[File(None)],
-    request_photo_files: list[UploadFile] | None = list[File(None)],
+    request_sound_files: list[UploadFile] | None = File(None),
+    request_file_files: list[UploadFile] | None = File(None),
+    request_photo_files: list[UploadFile] | None = File(None),
     request_data: CreateTaskRequest = Depends(),
 ) -> CreateTaskResponse:
     request_files = dict()
@@ -86,5 +86,8 @@ async def create_task(
             request_photo_files_info.append(photo_info)
 
         request_files[FileType.PHOTO] = request_photo_files_info
+    else:
+        photo_info = None
+        request_files[FileType.PHOTO] = photo_info
 
     return await interactor(request_data=request_data, request_files=request_files)
