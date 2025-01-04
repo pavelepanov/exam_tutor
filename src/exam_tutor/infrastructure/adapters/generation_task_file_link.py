@@ -9,7 +9,7 @@ from exam_tutor.domain.interfaces.generation_task_file_link import (
 
 
 class GenerationTaskFileLinkImpl(GenerationTaskFileLink):
-    async def generate_answer_video_link(self) -> TaskFileLink:
+    async def generate_task_file_link(self) -> TaskFileLink:
         characters = ascii_letters + digits
         task_file_link: TaskFileLink = TaskFileLink(
             "task_file_link"
