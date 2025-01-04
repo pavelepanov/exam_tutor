@@ -84,6 +84,54 @@ class CreateTaskInteractor:
         self._generation_task_photo_link = generation_task_photo_link
         self._generation_answer_video_link = generation_answer_video_link
 
+    async def generate_link_and_save_sound_file(
+        self, payload: bytes, content_type: str
+    ) -> TaskSoundLink:
+        task_sound_link: TaskSoundLink = (
+            await self._generation_task_sound_link.generate_task_sound_link()
+        )
+        sound_file_info = {
+            "payload": payload,
+            "content_type": content_type,
+            "link": task_sound_link,
+        }
+
+        await self._file_manager.save_sound_file(file_info=sound_file_info)
+
+        return task_sound_link
+
+    async def generate_link_and_save_file_file(
+        self, payload: bytes, content_type: str
+    ) -> TaskFileLink:
+        task_file_link = await self._generation_task_file_link.generate_task_file_link()
+
+        file_file_info = {
+            "payload": payload,
+            "content_type": content_type,
+            "link": task_file_link,
+        }
+
+        await self._file_manager.save_file_file(file_info=file_file_info)
+
+        return task_file_link
+
+    async def generate_link_and_save_photo_file(
+        self, payload: bytes, content_type: str
+    ) -> TaskPhotoLink:
+        task_photo_link = (
+            await self._generation_task_photo_link.generate_task_photo_link()
+        )
+
+        photo_file_info = {
+            "payload": payload,
+            "content_type": content_type,
+            "link": task_photo_link,
+        }
+
+        await self._file_manager.save_photo_file(file_info=photo_file_info)
+
+        return task_photo_link
+
     async def __call__(
         self,
         request_data: CreateTaskRequest,
@@ -120,47 +168,32 @@ class CreateTaskInteractor:
             if request_files[FileType.SOUND] is not None:
                 task_sound_file_links = list()
                 for file in request_files[FileType.SOUND]:
-                    sound_file_info = {
-                        "payload": file.get("payload"),
-                        "content_type": file.get("content_type"),
-                        "link": await (
-                            self._generation_task_sound_link.generate_task_sound_link(),
-                        ),
-                    }
+                    task_sound_link = await self.generate_link_and_save_sound_file(
+                        payload=file.get("payload"),
+                        content_type=file.get("content_type"),
+                    )
 
-                    await self._file_manager.save_sound_file(file_info=sound_file_info)
-
-                    task_sound_file_links.append(sound_file_info.get("link"))
+                    task_sound_file_links.append(task_sound_link)
 
             if request_files[FileType.FILE] is not None:
                 task_file_file_links = list()
                 for file in request_files[FileType.FILE]:
-                    file_file_info = {
-                        "payload": file.get("payload"),
-                        "content_type": file.get("content_type"),
-                        "link": await (
-                            self._generation_task_file_link.generate_task_file_link(),
-                        ),
-                    }
+                    task_file_link = await self.generate_link_and_save_file_file(
+                        payload=file.get("payload"),
+                        content_type=file.get("content_type"),
+                    )
 
-                    await self._file_manager.save_file_file(file_info=file_file_info)
-
-                    task_file_file_links.append(file_file_info.get("link"))
+                    task_file_file_links.append(task_file_link)
 
             if request_files[FileType.PHOTO] is not None:
                 task_photo_file_links = list()
                 for file in request_files[FileType.PHOTO]:
-                    photo_file_info = {
-                        "payload": file.get("payload"),
-                        "content_type": file.get("content_type"),
-                        "link": await (
-                            self._generation_task_photo_link.generate_task_photo_link(),
-                        ),
-                    }
+                    task_photo_link = await self.generate_link_and_save_photo_file(
+                        payload=file.get("payload"),
+                        content_type=file.get("content_type"),
+                    )
 
-                    await self._file_manager.save_photo_file(file_info=photo_file_info)
-
-                    task_photo_file_links.append(photo_file_info.get("link"))
+                    task_photo_file_links.append(task_photo_link)
 
             task: Task = await self._task_service.create_task(
                 exam=exam,
