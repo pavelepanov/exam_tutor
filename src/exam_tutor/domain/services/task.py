@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from exam_tutor.domain.entities.task import (
+    AnswerVideoLink,
     Condition,
     FindCode,
     StrAnswer,
@@ -40,15 +41,13 @@ class TaskService:
         answer: StrAnswer,
         difficult: DifficultEnum,
         created_at: datetime | None,
-        task_sound_link: TaskSoundLink | None,
-        task_file_link: TaskFileLink | None,
-        task_photo_link: TaskPhotoLink | None,
+        task_sound_links: list[TaskSoundLink] | None,
+        task_file_links: list[TaskFileLink] | None,
+        task_photo_links: list[TaskPhotoLink] | None,
+        answer_video_link: AnswerVideoLink | None,
     ):
         task_id: TaskId = await self._generation_task_id.generate_task_id()
         find_code: FindCode = await self._generation_find_code.generate_task_find_code()
-        answer_video_link = (
-            await self._generation_task_answer_video_link.generate_answer_video_link()
-        )
 
         return Task(
             id=task_id,
@@ -60,8 +59,8 @@ class TaskService:
             difficult=difficult,
             created_at=created_at,
             find_code=find_code,
-            task_sound_link=task_sound_link,
-            task_file_link=task_file_link,
-            task_photo_link=task_photo_link,
+            task_sound_links=task_sound_links,
+            task_file_links=task_file_links,
+            task_photo_links=task_photo_links,
             answer_video_link=answer_video_link,
         )
