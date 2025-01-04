@@ -14,7 +14,6 @@ repos:
     rev: 5.12.0
     hooks:
       - id: isort
-        args: ["--config", "pyproject.toml"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.4
