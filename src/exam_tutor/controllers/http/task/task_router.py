@@ -1,7 +1,9 @@
 from fastapi import APIRouter
 
 from exam_tutor.controllers.http.create_task import create_task_router
-from exam_tutor.controllers.http.get_task_by_find_code import get_task_by_uuid_router
+from exam_tutor.controllers.http.get_task_by_find_code import (
+    get_task_by_find_code_router,
+)
 
 tasks_router = APIRouter(
     prefix="/tasks",
@@ -9,7 +11,7 @@ tasks_router = APIRouter(
 )
 
 tasks_sub_routers = (
-    get_task_by_uuid_router,
+    get_task_by_find_code_router,
     create_task_router,
 )
 

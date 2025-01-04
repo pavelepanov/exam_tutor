@@ -8,12 +8,12 @@ from exam_tutor.application.interactors.get_task_by_find_code import (
 )
 from exam_tutor.entrypoint.ioc.interactors import GetTaskByFindCodeInteractor
 
-get_task_by_uuid_router = APIRouter()
+get_task_by_find_code_router = APIRouter()
 
 
-@get_task_by_uuid_router.get("/", status_code=status.HTTP_200_OK)
+@get_task_by_find_code_router.get("/", status_code=status.HTTP_200_OK)
 @inject
-async def get_task_by_uuid(
+async def get_task_by_find_code(
     interactor: FromDishka[GetTaskByFindCodeInteractor],
     request_data: GetTaskByFindCodeRequest = Depends(),
 ) -> GetTaskByFindCodeResponse:
