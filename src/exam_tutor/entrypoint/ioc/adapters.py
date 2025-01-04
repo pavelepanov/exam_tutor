@@ -1,4 +1,3 @@
-import logging
 from typing import AsyncIterable
 
 from dishka import Provider, Scope, from_context, provide
@@ -50,8 +49,6 @@ from exam_tutor.infrastructure.adapters.generation_task_sound_link import (
 from exam_tutor.infrastructure.adapters.minio_manager import MinIOManager
 from exam_tutor.infrastructure.adapters.sqla_committer import CommitterImpl
 from exam_tutor.infrastructure.adapters.sqla_task_data_mapper import SqlaTaskDataMapper
-
-logger = logging.getLogger(__name__)
 
 
 class SqlaProvider(Provider):
@@ -117,8 +114,6 @@ class TaskDomainProvider(Provider):
 class MinIOProvider(Provider):
     @provide(scope=Scope.APP)
     def provide_minio_client(self, config: Config) -> Minio:
-        logger.info("SECRET: %s", config.minio_config.secret_key)
-        logger.info("ACCESS: %s", config.minio_config.access_key)
         client = Minio(
             endpoint=config.minio_config.uri,
             access_key=config.minio_config.access_key,
