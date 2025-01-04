@@ -4,13 +4,22 @@ from io import BytesIO
 from minio import Minio
 
 from exam_tutor.application.interfaces.file_manager import FileManager
-from exam_tutor.domain.entities.task import TaskFileLink, TaskPhotoLink, TaskSoundLink
+from exam_tutor.domain.entities.task import (
+    AnswerVideoLink,
+    TaskFileLink,
+    TaskPhotoLink,
+    TaskSoundLink,
+)
 from exam_tutor.entrypoint.config import Config
 
 logger = logging.getLogger(__name__)
 
 
 PART_SIZE = 5 * 1024 * 1024
+
+
+async def create_public_url(minio_server: str, bucket_name: str, link: str) -> str:
+    return f"http://{minio_server}/{bucket_name}/{link}"
 
 
 class MinIOManager(FileManager):
@@ -69,3 +78,14 @@ class MinIOManager(FileManager):
             content_type=file_info.get("content_type"),
             part_size=PART_SIZE,
         )
+
+    async def get_answer_video_public_url(
+        self, answer_video_link: AnswerVideoLink
+    ) -> str:
+        answer_video_public_url = await create_public_url(
+            minio_server=self._minio_config.minio_config.minio_server,
+            bucket_name=self._minio_config.s3_buckets.answer_video_bucket,
+            link=answer_video_link,
+        )
+
+        return answer_video_public_url

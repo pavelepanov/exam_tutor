@@ -23,19 +23,25 @@ class MinIOConfig:
     access_key: str
     secret_key: str
     secure: bool
+    minio_server: str
 
     @staticmethod
     def from_env() -> "MinIOConfig":
         uri = getenv("MINIO_URI")
         access_key = getenv("MINIO_ACCESS_KEY")
         secret_key = getenv("MINIO_SECRET_KEY")
+        minio_server = getenv("MINIO_SERVER")
         if getenv("MINIO_SECURE") == "false":
             secure = False
         if getenv("MINIO_SECURE") == "true":
             secure = True
 
         return MinIOConfig(
-            uri=uri, access_key=access_key, secret_key=secret_key, secure=secure
+            uri=uri,
+            access_key=access_key,
+            secret_key=secret_key,
+            secure=secure,
+            minio_server=minio_server,
         )
 
 

@@ -4,6 +4,7 @@ from datetime import datetime
 from uuid import UUID
 
 from exam_tutor.application.errors import DoesNotExistError
+from exam_tutor.application.interfaces.file_manager import FileManager
 from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
 from exam_tutor.domain.entities.task import FindCode, Task
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
@@ -26,10 +27,10 @@ class GetTaskByFindCodeResponse:
     answer: str
     difficult: DifficultEnum
     find_code: str
-    task_sound_link: str | None
-    task_file_link: str | None
-    task_photo_link: str | None
-    answer_video_link: str | None
+    task_sound_links: list[str] | None
+    task_file_links: list[str] | None
+    task_photo_links: list[str] | None
+    answer_video_public_url: str | None
     created_at: datetime
 
 
@@ -37,8 +38,10 @@ class GetTaskByFindCodeInteractor:
     def __init__(
         self,
         task_data_gateway: TaskDataGateway,
+        file_manager: FileManager,
     ):
         self._task_data_gateway = task_data_gateway
+        self._file_manager = file_manager
 
     async def __call__(
         self, request_data: GetTaskByFindCodeRequest
@@ -47,12 +50,19 @@ class GetTaskByFindCodeInteractor:
             "Get task by find code: started. Find code: %s", request_data.find_code
         )
         find_code: FindCode = FindCode(request_data.find_code)
+        answer_video_public_url: str | None = None
 
         task: Task = await self._task_data_gateway.read_by_find_code(
             find_code=find_code
         )
 
         if task is not None:
+            answer_video_public_url = (
+                await self._file_manager.get_answer_video_public_url(
+                    answer_video_link=task.answer_video_link
+                )
+            )
+
             logger.info("Get task by find code: finished. Find code: %s", find_code)
             return GetTaskByFindCodeResponse(
                 id=task.id,
@@ -62,10 +72,10 @@ class GetTaskByFindCodeInteractor:
                 condition=task.condition,
                 answer=task.answer,
                 difficult=task.difficult,
-                task_sound_link=task.task_sound_link,
-                task_file_link=task.task_file_link,
-                task_photo_link=task.task_photo_link,
-                answer_video_link=task.answer_video_link,
+                task_sound_links=None,
+                task_file_links=None,
+                task_photo_links=None,
+                answer_video_public_url=answer_video_public_url,
                 created_at=task.created_at,
                 find_code=task.find_code,
             )
