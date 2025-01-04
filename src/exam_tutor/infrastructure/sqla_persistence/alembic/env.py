@@ -6,7 +6,8 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from exam_tutor.entrypoint.config import PostgresDsn
+from exam_tutor.infrastructure.sqla_persistence.mappings.task import Task
+from exam_tutor.entrypoint.config import PostgresConfig
 from exam_tutor.infrastructure.sqla_persistence.orm_registry import mapping_registry
 
 # this is the Alembic Config object, which provides
@@ -14,7 +15,7 @@ from exam_tutor.infrastructure.sqla_persistence.orm_registry import mapping_regi
 config = context.config
 config.set_main_option(
     "sqlalchemy.url",
-    PostgresDsn.from_env().db_uri,
+    PostgresConfig.from_env().db_uri,
 )
 
 # Interpret the config file for Python logging.

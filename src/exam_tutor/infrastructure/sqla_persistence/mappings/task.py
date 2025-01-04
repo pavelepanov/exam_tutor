@@ -1,4 +1,4 @@
-from sqlalchemy import UUID, Column, DateTime, Enum, String, Table, func
+from sqlalchemy import ARRAY, UUID, Column, DateTime, Enum, String, Table, func
 
 from exam_tutor.domain.entities.task import Task
 from exam_tutor.domain.enums import DifficultEnum, ExamEnum, ExamTaskNumber, SubjectEnum
@@ -22,9 +22,9 @@ tasks_table = Table(
         nullable=False,
     ),
     Column("find_code", String, nullable=False),
-    Column("task_sound_link", String, nullable=True),
-    Column("task_file_link", String, nullable=True),
-    Column("task_photo_link", String, nullable=True),
+    Column("task_sound_links", ARRAY(String), nullable=True),
+    Column("task_file_links", ARRAY(String), nullable=True),
+    Column("task_photo_links", ARRAY(String), nullable=True),
     Column("answer_video_link", String, nullable=True),
 )
 
