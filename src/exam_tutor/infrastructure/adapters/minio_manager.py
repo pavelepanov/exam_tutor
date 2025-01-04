@@ -1,9 +1,16 @@
+import logging
 from io import BytesIO
 
 from minio import Minio
 
 from exam_tutor.application.interfaces.file_manager import FileManager
+from exam_tutor.domain.entities.task import TaskFileLink, TaskPhotoLink, TaskSoundLink
 from exam_tutor.entrypoint.config import Config
+
+logger = logging.getLogger(__name__)
+
+
+PART_SIZE = 5 * 1024 * 1024
 
 
 class MinIOManager(FileManager):
@@ -24,5 +31,41 @@ class MinIOManager(FileManager):
             BytesIO(payload),
             length=-1,
             content_type=content_type,
-            part_size=5 * 1024 * 1024,
+            part_size=PART_SIZE,
+        )
+
+    async def save_sound_file(
+        self, file_info: dict[str, bytes | str | TaskSoundLink]
+    ) -> None:
+        self._minio_client.put_object(
+            self._minio_config.s3_buckets.task_sound_bucket,
+            file_info.get("link"),
+            BytesIO(file_info.get("payload")),
+            length=-1,
+            content_type=file_info.get("content_type"),
+            part_size=PART_SIZE,
+        )
+
+    async def save_file_file(
+        self, file_info: dict[str, bytes | str | TaskFileLink]
+    ) -> None:
+        self._minio_client.put_object(
+            self._minio_config.s3_buckets.task_file_bucket,
+            file_info.get("link"),
+            BytesIO(file_info.get("payload")),
+            length=-1,
+            content_type=file_info.get("content_type"),
+            part_size=PART_SIZE,
+        )
+
+    async def save_photo_file(
+        self, file_info: dict[str, bytes | str | TaskPhotoLink]
+    ) -> None:
+        self._minio_client.put_object(
+            self._minio_config.s3_buckets.task_photo_bucket,
+            file_info.get("link"),
+            BytesIO(file_info.get("payload")),
+            length=-1,
+            content_type=file_info.get("content_type"),
+            part_size=PART_SIZE,
         )
