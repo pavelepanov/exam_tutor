@@ -89,3 +89,39 @@ class MinIOManager(FileManager):
         )
 
         return answer_video_public_url
+
+    async def get_task_sound_file_public_url(
+        self,
+        task_sound_file_link: TaskSoundLink,
+    ) -> str:
+        task_sound_file_public_url = await create_public_url(
+            minio_server=self._minio_config.minio_config.minio_server,
+            bucket_name=self._minio_config.s3_buckets.task_sound_bucket,
+            link=task_sound_file_link,
+        )
+
+        return task_sound_file_public_url
+
+    async def get_task_file_file_public_url(
+        self,
+        task_file_file_link: TaskFileLink,
+    ) -> str:
+        task_file_file_public_url = await create_public_url(
+            minio_server=self._minio_config.minio_config.minio_server,
+            bucket_name=self._minio_config.s3_buckets.task_file_bucket,
+            link=task_file_file_link,
+        )
+
+        return task_file_file_public_url
+
+    async def get_task_photo_file_public_url(
+        self,
+        task_photo_file_link: TaskPhotoLink,
+    ) -> str:
+        task_photo_file_public_url = await create_public_url(
+            minio_server=self._minio_config.minio_config.minio_server,
+            bucket_name=self._minio_config.s3_buckets.task_photo_bucket,
+            link=task_photo_file_link,
+        )
+
+        return task_photo_file_public_url

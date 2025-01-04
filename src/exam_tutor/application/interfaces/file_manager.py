@@ -34,3 +34,21 @@ class FileManager(Protocol):
     async def get_answer_video_public_url(
         self, answer_video_link: AnswerVideoLink
     ) -> str: ...
+
+    @abstractmethod
+    async def get_task_sound_file_public_url(
+        self,
+        task_sound_file_link: TaskSoundLink,
+    ) -> str: ...
+
+    @abstractmethod
+    async def get_task_file_file_public_url(
+        self,
+        task_file_file_link: TaskFileLink,
+    ) -> str: ...
+
+    @abstractmethod
+    async def get_task_photo_file_public_url(
+        self,
+        task_photo_file_link: TaskPhotoLink,
+    ) -> str: ...
