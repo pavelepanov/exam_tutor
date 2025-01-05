@@ -5,10 +5,16 @@ from typing import Dict
 from uuid import UUID
 
 from exam_tutor.application.enums import FileType
-from exam_tutor.application.errors import NotCreated
+from exam_tutor.application.errors import NotCreated, ValidationError
 from exam_tutor.application.interfaces.committer import Committer
 from exam_tutor.application.interfaces.file_manager import FileManager
 from exam_tutor.application.interfaces.task_data_gateway import TaskDataGateway
+from exam_tutor.application.validators.check_mime_type import (
+    check_answer_video_mime_type,
+    check_task_file_mime_type,
+    check_task_photo_mime_type,
+    check_task_sound_mime_type,
+)
 from exam_tutor.domain.entities.task import (
     AnswerVideoLink,
     Condition,
@@ -87,50 +93,63 @@ class CreateTaskInteractor:
     async def generate_link_and_save_sound_file(
         self, payload: bytes, content_type: str
     ) -> TaskSoundLink:
-        task_sound_link: TaskSoundLink = (
-            await self._generation_task_sound_link.generate_task_sound_link()
-        )
-        sound_file_info = {
-            "payload": payload,
-            "content_type": content_type,
-            "link": task_sound_link,
-        }
+        logger.info("CHECK:: %s", content_type)
+        if check_task_sound_mime_type(content_type=content_type):
+            task_sound_link: TaskSoundLink = (
+                await self._generation_task_sound_link.generate_task_sound_link()
+            )
+            sound_file_info = {
+                "payload": payload,
+                "content_type": content_type,
+                "link": task_sound_link,
+            }
 
-        await self._file_manager.save_sound_file(file_info=sound_file_info)
+            await self._file_manager.save_sound_file(file_info=sound_file_info)
 
-        return task_sound_link
+            return task_sound_link
+        else:
+            raise ValidationError("Sound should be in [.wav, .mp3, .mpeg, .ogg]")
 
     async def generate_link_and_save_file_file(
         self, payload: bytes, content_type: str
     ) -> TaskFileLink:
-        task_file_link = await self._generation_task_file_link.generate_task_file_link()
+        if check_task_file_mime_type(content_type=content_type):
+            task_file_link = (
+                await self._generation_task_file_link.generate_task_file_link()
+            )
 
-        file_file_info = {
-            "payload": payload,
-            "content_type": content_type,
-            "link": task_file_link,
-        }
+            file_file_info = {
+                "payload": payload,
+                "content_type": content_type,
+                "link": task_file_link,
+            }
 
-        await self._file_manager.save_file_file(file_info=file_file_info)
+            await self._file_manager.save_file_file(file_info=file_file_info)
 
-        return task_file_link
+            return task_file_link
+        else:
+            raise ValidationError(
+                "File should be in [.txt, .docx, .doc, .pdf, .xlsx, .xlsm, .xls, .ods]"
+            )
 
     async def generate_link_and_save_photo_file(
         self, payload: bytes, content_type: str
     ) -> TaskPhotoLink:
-        task_photo_link = (
-            await self._generation_task_photo_link.generate_task_photo_link()
-        )
+        if check_task_photo_mime_type(content_type=content_type):
+            task_photo_link = (
+                await self._generation_task_photo_link.generate_task_photo_link()
+            )
 
-        photo_file_info = {
-            "payload": payload,
-            "content_type": content_type,
-            "link": task_photo_link,
-        }
+            photo_file_info = {
+                "payload": payload,
+                "content_type": content_type,
+                "link": task_photo_link,
+            }
 
-        await self._file_manager.save_photo_file(file_info=photo_file_info)
+            await self._file_manager.save_photo_file(file_info=photo_file_info)
 
-        return task_photo_link
+            return task_photo_link
+        raise ValidationError("Photo should be in [.jpeg, .png, .jpg]")
 
     async def __call__(
         self,
@@ -154,16 +173,26 @@ class CreateTaskInteractor:
             task_photo_file_links: list[TaskPhotoLink] | None = None
 
             if request_files[FileType.ANSWER_VIDEO] is not None:
-                answer_video_link: AnswerVideoLink = await (
-                    self._generation_answer_video_link.generate_answer_video_link()
-                )
-                await self._file_manager.save_answer_video(
-                    payload=request_files[FileType.ANSWER_VIDEO].get("payload"),
+                if check_answer_video_mime_type(
                     content_type=request_files[FileType.ANSWER_VIDEO].get(
                         "content_type"
-                    ),
-                    answer_video_link=answer_video_link,
-                )
+                    )
+                ):
+                    answer_video_link: AnswerVideoLink = await (
+                        self._generation_answer_video_link.generate_answer_video_link()
+                    )
+                    await self._file_manager.save_answer_video(
+                        payload=request_files[FileType.ANSWER_VIDEO].get("payload"),
+                        content_type=request_files[FileType.ANSWER_VIDEO].get(
+                            "content_type"
+                        ),
+                        answer_video_link=answer_video_link,
+                    )
+                else:
+                    raise ValidationError(
+                        "Answer video should be in [.mp4, .webm, .avi, .mpeg, .egp, \
+                         .3g2, .mov, .mkv, wmv, .flv, .ogv]"
+                    )
 
             if request_files[FileType.SOUND] is not None:
                 task_sound_file_links = list()
