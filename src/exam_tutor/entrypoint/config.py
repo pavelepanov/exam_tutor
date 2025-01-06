@@ -72,3 +72,11 @@ class Config:
     minio_config: MinIOConfig
     postgres_config: PostgresConfig
     s3_buckets: S3Buckets
+
+
+def create_config() -> Config:
+    return Config(
+        minio_config=MinIOConfig.from_env(),
+        postgres_config=PostgresConfig.from_env(),
+        s3_buckets=S3Buckets.from_env(),
+    )
