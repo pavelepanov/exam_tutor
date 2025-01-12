@@ -26,7 +26,7 @@ class Task:
     difficult: DifficultEnum
     created_at: datetime | None
     find_code: FindCode
-    task_sound_links: list[TaskSoundLink] | None = None
-    task_file_links: list[TaskFileLink] | None = None
-    task_photo_links: list[TaskPhotoLink] | None = None
-    answer_video_link: AnswerVideoLink | None = None
+    task_sound_links: list[TaskSoundLink] | None
+    task_file_links: list[TaskFileLink] | None
+    task_photo_links: list[TaskPhotoLink] | None
+    answer_video_link: AnswerVideoLink | None
