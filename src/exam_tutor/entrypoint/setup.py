@@ -3,6 +3,7 @@ from typing import Iterable
 
 from dishka import AsyncContainer, Provider, make_async_container
 from fastapi import APIRouter, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from exam_tutor.controllers.http.base.error_handler import init_error_handlers
 from exam_tutor.entrypoint.config import Config, create_config
@@ -25,6 +26,15 @@ def create_async_ioc_container(providers: Iterable[Provider]) -> AsyncContainer:
 def configure_app(app: FastAPI, root_router: APIRouter) -> None:
     app.include_router(root_router)
     init_error_handlers(app)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[
+            "http://localhost:5173",
+        ],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
 def configure_logging(level=DEBUG):
