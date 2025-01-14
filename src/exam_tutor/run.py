@@ -16,6 +16,7 @@ from exam_tutor.infrastructure.sqla_persistence.mappings.map import map_tables
 
 def make_app(*di_providers: Provider) -> FastAPI:
     app = create_app()
+    setup_middlewares(app=app)
     map_tables()
     configure_app(app=app, root_router=root_router)
 
@@ -24,7 +25,6 @@ def make_app(*di_providers: Provider) -> FastAPI:
     )
 
     setup_dishka(container=async_ioc_container, app=app)
-    setup_middlewares(app=app)
 
     configure_logging()
 

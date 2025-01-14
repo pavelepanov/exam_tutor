@@ -4,7 +4,7 @@
 # Проект
 ## Технологический стек
 - **Python**: `3.12`
-- **Production**: `alembic`, `dishka`, `fastapi`, `asyncpg`, `sqlalchemy[async]`, `gunicorn`, `minio`
+- **Production**: `alembic`, `dishka`, `fastapi`, `asyncpg`, `sqlalchemy[async]`, `gunicorn`, `minio`, `prometheus`, `grafana`
 - **Development**: `isort`, `ruff`, `pre-commit`
 ## API
 <p align="center">
@@ -23,6 +23,10 @@
 - '/' (POST): Открыт для **всех**
   - Создает задание, ожидая информацию о задании и файлы
 
+### Metrics (`/metrics`)
+Обязательный handler для prometheus
+ - Стандарт Prometheus: Все приложения, интегрирующиеся с Prometheus, экспонируют метрики через специальный эндпоинт
+ - Автоматическое поведение Prometheus: При сборе данных Prometheus отправляет запросы типа GET /metrics к каждому указанному таргету
 ## Файловая структура
 ```
 .
@@ -66,6 +70,17 @@
 
 - Соблюден принцип инверсии зависимотей
 - Зависимости доставляются при помощи инъекции зависимостей, используя di-framework Dishka
+## Метрики
+### Сбор метрик
+Использован Prometheus для сбора метрик приложения, а также написан middleware для подсчета вызовов каждого endpoint.
+### Визуализация метрик
+Испольована Grafana, создано подключение к prometheus и создан dashboard.
+<p align="center">
+  <img src="docs/grafana.jpg" alt="Correct Dependency with DI" />
+  <br><em>Visualization</em>
+</p>
+
+
 #### License
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.

@@ -7,7 +7,7 @@ services:
         context: .
         dockerfile: Dockerfile
     ports:
-      - 8000:8000
+      - "8000:${BACKEND_PORT}"
     networks:
       - custom
     depends_on:
@@ -48,6 +48,30 @@ services:
     volumes:
       - minio-data:/data
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    env_file:
+      - ./.env
+    ports:
+      - "9090:${PROMETHEUS_PORT}"
+    networks:
+      - custom
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:${GRAFANA_PORT}"
+    depends_on:
+      - prometheus
+    networks:
+      - custom
+    volumes:
+      - grafana_data:/var/lib/grafana
+
 
 networks:
   custom:
@@ -55,3 +79,4 @@ networks:
 
 volumes:
   minio-data:
+  grafana_data:

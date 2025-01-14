@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from exam_tutor.controllers.http.middlewares.metrics import MetricsMiddleware
+
 
 def setup_middlewares(app: FastAPI):
     app.add_middleware(
@@ -12,3 +14,4 @@ def setup_middlewares(app: FastAPI):
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    app.add_middleware(MetricsMiddleware)
